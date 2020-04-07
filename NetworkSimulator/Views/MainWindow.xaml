@@ -3,7 +3,9 @@
         xmlns:vm="clr-namespace:NetworkSimulator.ViewModels;assembly=NetworkSimulator"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="980" d:DesignHeight="600"
+        Width="980"
+        Height="600"
         x:Class="NetworkSimulator.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="NetworkSimulator">
@@ -12,6 +14,101 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*" />
+      <ColumnDefinition Width="300" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40" />
+      <RowDefinition Height="210" />
+      <RowDefinition Height="1*" />
+    </Grid.RowDefinitions>
 
+    <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="LightGray" Margin="10,10,10,0">
+      <TextBlock
+        Text="Параметры моделирования"
+        HorizontalAlignment="Center"
+        Margin="0,4,0,0"
+        FontSize="18" />
+    </Grid>
+
+    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="LightGray" Margin="10,0,10,10">
+      <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical" Width="200" Margin="20,10,20,20">
+          <TextBlock Text="Файл" TextAlignment="Center" />
+          <Border BorderBrush="Black" Height="1" BorderThickness="1" Margin="0,4,0,4" />
+          <TextBlock Text="Размер файла (байт):" Margin="0,0,0,4" />
+          <TextBox Margin="0,0,0,4" Text="{Binding Parameters.FileSize}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Width="200" Margin="20,10,20,20">
+          <TextBlock Text="Протокол отправки" TextAlignment="Center" />
+          <Border BorderBrush="Black" Height="1" BorderThickness="1" Margin="0,4,0,4" />
+          <TextBlock Text="Размер окна (кол-во пакетов):" Margin="0,0,0,4" />
+          <TextBox Margin="0,0,0,4" Text="{Binding Parameters.ProtocolWindowSize}" />
+          <TextBlock Text="Размер пакета (байт):" Margin="0,0,0,4" />
+          <TextBox Margin="0,0,0,4" Text="{Binding Parameters.ProtocolPackageSize}" />
+          <TextBlock Text="Длительность таймаута:" Margin="0,0,0,4" />
+          <TextBox Margin="0,0,0,4" Text="{Binding Parameters.ProtocolTimeout}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Width="440" Margin="20,10,20,20">
+          <TextBlock Text="Сеть" TextAlignment="Center" />
+          <Border BorderBrush="Black" Height="1" BorderThickness="1" Margin="0,4,0,4" />
+          <Grid ColumnDefinitions="1*,40,1*">
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+              <TextBlock Text="Вероятность искажения пакета:" Margin="0,0,0,4" />
+              <TextBox Margin="0,0,0,4" Text="{Binding Parameters.NetworkPackageDistortionProbability}" />
+              <TextBlock Text="Вероятность потери пакета:" Margin="0,0,0,4" />
+              <TextBox Margin="0,0,0,4" Text="{Binding Parameters.NetworkPackageLossProbability}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Vertical">
+              <TextBlock Text="Распределение времени:" Margin="0,0,0,4" />
+              <TextBox Margin="0,0,0,4" Text="{Binding Parameters.NetworkPackageTransmissionTimeDistribution}" />
+              <TextBlock Text="Параметр:" Margin="0,0,0,4" />
+              <TextBox Margin="0,0,0,4" Text="{Binding Parameters.NetworkPackageTransmissionTimeParameter}" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Column="1" Grid.Row="2" Background="LightGray" Margin="10,0,10,10">
+      <StackPanel Orientation="Vertical" Margin="20,0,20,0">
+        <TextBlock Text="Результат" HorizontalAlignment="Center" Margin="0,4,0,0" FontSize="18" />
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+          <CheckBox IsChecked="{Binding Parameters.Visualize}" />
+          <TextBlock Margin="6,0,0,0" Text="Визуализировать" />
+        </StackPanel>
+        <TextBlock Text="Время передачи файла:" Margin="0,0,0,4" />
+        <TextBox Margin="0,0,0,4" Text="{Binding Result.TransmissionTime}" />
+        <TextBlock Text="Число повторов:" Margin="0,0,0,4" />
+        <TextBox Margin="0,0,0,4" Text="{Binding Result.RetriesCount}" />
+        <TextBlock Text="Число избыточных передач:" Margin="0,0,0,4" />
+        <TextBox Margin="0,0,0,4" Text="{Binding Result.RedundantTransmissionsCount}" />
+        <TextBlock Text="Фактическое количество экспериментов:" Margin="0,0,0,4" />
+        <TextBox Margin="0,0,0,4" Text="{Binding Result.ExperimentsCount}" />
+        <Button Content="Сохранить результат" Margin="0,20,0,0" />
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Column="0" Grid.Row="2" Margin="10,0,0,10">
+      <StackPanel Orientation="Vertical">
+        <ProgressBar Height="30" Minimum="0" Maximum="100" Value="{Binding Experiment.Progress}">
+        </ProgressBar>
+        <Grid ColumnDefinitions="1*,20,1*" Margin="0,10,0,0">
+          <Button Grid.Column="0" Height="40" Content="СТАРТ" Background="LightBlue" />
+          <Button Grid.Column="2" Height="40" Content="СТОП" Background="LightCoral" />
+        </Grid>
+        <DataGrid Items="{Binding Experiment.Log}" Height="250" Margin="0,10,0,0" RowBackground="AliceBlue">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Номер пакета" Binding="{Binding PackageNumber}" Width="180" />
+            <DataGridTextColumn Header="Длина (байт)" Binding="{Binding PackageSize}" Width="180" />
+            <DataGridTextColumn Header="Состояние" Binding="{Binding State}" Width="180" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </StackPanel>
+    </Grid>
+  </Grid>
 </Window>
