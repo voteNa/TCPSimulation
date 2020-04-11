@@ -1,10 +1,17 @@
 ﻿using System.Collections.ObjectModel;
+using ReactiveUI;
 
 namespace NetworkSimulator.ViewModels
 {
-    public class ExperimentState
+    public class ExperimentState : ViewModelBase
     {
-        public int Progress { get; set; }
+        private int progress;
+
+        public int Progress
+        {
+            get => progress;
+            set => this.RaiseAndSetIfChanged(ref this.progress, value);
+        }
 
         public ObservableCollection<ExperimentLogEntry> Log { get; set; }
     }

@@ -1,6 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using NetworkSimulator.ViewModels;
 
 namespace NetworkSimulator.Views
 {
@@ -17,6 +20,16 @@ namespace NetworkSimulator.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void ShowStatisticsClick(Object sender, RoutedEventArgs args)
+        {
+            var statisticsWindow = new StatisticsWindow
+            {
+                DataContext = new StatisticsWindowViewModel()
+            };
+
+            statisticsWindow.Show();
         }
     }
 }

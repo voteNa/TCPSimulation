@@ -1,0 +1,67 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:NetworkSimulator.ViewModels;assembly=NetworkSimulator"
+        xmlns:v="clr-namespace:NetworkSimulator.Views;assembly=NetworkSimulator"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:oxy="clr-namespace:OxyPlot.Avalonia;assembly=OxyPlot.Avalonia"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="980" d:DesignHeight="600"
+        Width="980"
+        Height="600"
+        MinWidth="980"
+        MinHeight="600"
+        x:Class="NetworkSimulator.Views.StatisticsWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Network simulator - Statistics">
+  <Design.DataContext>
+    <vm:StatisticsWindowViewModel/>
+  </Design.DataContext>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="2*" />
+      <ColumnDefinition Width="1*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="100" />
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Column="0" Grid.Row="0" Background="White" Margin="10,30,10,10">
+      <oxy:PlotView Model="{Binding Plot}"/>
+    </Grid>
+
+    <Grid Grid.Column="1" Grid.Row="0" Background="White" Margin="10,60,10,10">
+      <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+        <TextBlock Text="Выбор гистограммы" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="30" />
+        <StackPanel Orientation="Vertical"  Background="LightGray" Margin="0,20,0,20">
+          <Button Height="50" Margin="20,20,20,0" Background="LightBlue" Command="{Binding SetFileTransmissionTimeDistributionCommand}">
+            <TextBlock Text="Эмпирическое распределение времени передачи файла" TextAlignment="Center" TextWrapping="Wrap" />
+          </Button>
+          <Button Height="50" Margin="20,20,20,0" Background="LightBlue" Command="{Binding SetRedundantTransmissionCountDistributionCommand}">
+            <TextBlock Text="Эмпирическое распределение числа избыточных передач" TextAlignment="Center" TextWrapping="Wrap" />
+          </Button>
+          <Button Height="50" Margin="20,20,20,0" Background="LightBlue" Command="{Binding SetRetransmissionCountDistributionCommand}">
+            <TextBlock Text="Эмпирическое распределение числа повторных передач" TextAlignment="Center" TextWrapping="Wrap" />
+          </Button>
+          <Button Height="40" Content="Сохранить все" Margin="20,20,20,20" Command="{Binding SaveAllCommand}"/>
+        </StackPanel>
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,10,10,10">
+      <Grid ColumnDefinitions="1*,20,1*,20,1*" Margin="0,0,0,0"  DockPanel.Dock="Top">
+          <Button Grid.Column="0" Height="40" Margin="20,20,0,20" Background="LightBlue" Command="{Binding SaveSourceDataCommand}">
+            <TextBlock Text="Сохраниь исходные данные" TextAlignment="Center" TextWrapping="Wrap" />
+          </Button>
+          <Button Grid.Column="2" Height="40" Margin="20,20,0,20" Background="LightBlue" Command="{Binding SaveChartCommand}">
+            <TextBlock Text="Сохранить гистограмму" TextAlignment="Center" TextWrapping="Wrap" />
+          </Button>
+          <Button Grid.Column="4" Height="40" Margin="20,20,20,20" Background="LightBlue" Command="{Binding SaveChartAsDataCommand}">
+            <TextBlock Text="Сохранить гистограмму как данные" TextAlignment="Center" TextWrapping="Wrap" />
+          </Button>
+        </Grid>
+    </Grid>
+    
+  </Grid>
+</Window>

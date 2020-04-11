@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+using ReactiveUI;
 
 namespace NetworkSimulator.ViewModels
 {
@@ -16,6 +18,7 @@ namespace NetworkSimulator.ViewModels
                 NetworkPackageLossProbability = 0.0005,
                 NetworkPackageTransmissionTimeDistribution = DistributionType.Exponential,
                 NetworkPackageTransmissionTimeParameter = "1",
+                ModelingExperimentCount = 10,
                 Visualize = true,
             };
 
@@ -36,12 +39,33 @@ namespace NetworkSimulator.ViewModels
                     new ExperimentLogEntry {PackageNumber = 54, PackageSize = 1500, State = ExperimentPackageState.Success},
                 }
             };
+
+            this.StartCommand = ReactiveCommand.Create(this.Start);
+            this.StopCommand = ReactiveCommand.Create(this.Stop );
         }
+
+        public ICommand StartCommand { get; }
+        public ICommand StopCommand { get; }
 
         public ModelingParameters Parameters { get; set; }
 
         public ExperimentState Experiment { get; set; }
 
         public ModelingResult Result { get; set; }
+
+        private void Start()
+        {
+            // Логика для действия "Старт"
+            if (this.Experiment.Progress < 100)
+            {
+                this.Experiment.Progress++;
+            }
+        }
+
+        private void Stop()
+        {
+            // Логика для действия "Стоп"
+            this.Experiment.Progress = 0;
+        }
     }
 }
